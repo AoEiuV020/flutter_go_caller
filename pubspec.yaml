@@ -1,7 +1,7 @@
 name: flutter_go_caller
 description: "A new Flutter FFI plugin project."
 version: 0.0.1
-homepage:
+homepage: https://github.com/AoEiuV020/flutter_go_caller
 
 environment:
   sdk: ^3.7.2
@@ -10,10 +10,11 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  isolate_manager: ^6.0.0+2
   plugin_platform_interface: ^2.0.2
+  ffi: ^2.1.3
 
 dev_dependencies:
-  ffi: ^2.1.3
   ffigen: ^13.0.0
   flutter_test:
     sdk: flutter

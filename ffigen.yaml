@@ -1,15 +1,15 @@
 # Run with `dart run ffigen --config ffigen.yaml`.
 name: FlutterGoCallerBindings
 description: |
-  Bindings for `src/flutter_go_caller.h`.
+  Bindings for `go/flutter_go_caller.h`.
 
   Regenerate bindings with `dart run ffigen --config ffigen.yaml`.
-output: 'lib/flutter_go_caller_bindings_generated.dart'
+output: 'lib/src/flutter_go_caller_bindings_generated.dart'
 headers:
   entry-points:
-    - 'src/flutter_go_caller.h'
+    - 'go/flutter_go_caller.h'
   include-directives:
-    - 'src/flutter_go_caller.h'
+    - 'go/flutter_go_caller.h'
 preamble: |
   // ignore_for_file: always_specify_types
   // ignore_for_file: camel_case_types

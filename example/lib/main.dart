@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 
-import 'package:flutter_go_caller/flutter_go_caller.dart' as flutter_go_caller;
+import 'package:flutter_go_caller/flutter_go_caller.dart';
 
 void main() {
   runApp(const MyApp());
@@ -21,8 +21,10 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    sumResult = flutter_go_caller.sum(1, 2);
-    sumAsyncResult = flutter_go_caller.sumAsync(3, 4);
+    sumResult = goCall('Sum', {'a': 1, 'b': 2})['result'];
+    sumAsyncResult = goCallAsync('Sum', {'a': 3, 'b': 4}).then((value) {
+      return value['result'];
+    });
   }
 
   @override
@@ -31,9 +33,7 @@ class _MyAppState extends State<MyApp> {
     const spacerSmall = SizedBox(height: 10);
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Native Packages'),
-        ),
+        appBar: AppBar(title: const Text('Native Packages')),
         body: SingleChildScrollView(
           child: Container(
             padding: const EdgeInsets.all(10),

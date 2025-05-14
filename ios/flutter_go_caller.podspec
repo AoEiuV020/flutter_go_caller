@@ -22,7 +22,19 @@ A new Flutter FFI plugin project.
   s.dependency 'Flutter'
   s.platform = :ios, '12.0'
 
-  # Flutter.framework does not contain a i386 slice.
-  s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }
+  s.script_phase = {
+    :name => 'update go library',
+    :script => 'touch ${BUILT_PRODUCTS_DIR}/prebuild.touch',
+    :execution_position=> :before_compile,
+    :input_files => ['${PODS_TARGET_SRCROOT}/../prebuild/${PLATFORM_FAMILY_NAME}/'],
+    :output_files => ["${BUILT_PRODUCTS_DIR}/prebuild.touch"],
+  }
+  s.pod_target_xcconfig = {
+    'DEFINES_MODULE' => 'YES',
+    # Flutter.framework does not contain a i386 slice.
+    'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386',
+    # We use `-force_load` instead of `-l` since Xcode strips out unused symbols from static libraries.
+    'OTHER_LDFLAGS' => "-force_load ${PODS_TARGET_SRCROOT}/../prebuild/${PLATFORM_FAMILY_NAME}/${PLATFORM_NAME}/${CURRENT_ARCH}/lib#{s.name}.a",
+  }
   s.swift_version = '5.0'
 end
