@@ -70,6 +70,33 @@ func Execute(method string, params map[string]interface{}) map[string]interface{
 		// 直接使用整数调用Sum函数
 		result["result"] = Sum(aInt, bInt)
 
+	case "SumLongRunning":
+		// 提取参数
+		a, aOk := params["a"]
+		b, bOk := params["b"]
+		if !aOk || !bOk {
+			result["error"] = "缺少必要参数 a 或 b"
+			return result
+		}
+
+		// 先转换为整数
+		aFloat, aOk := a.(float64)
+		if !aOk {
+			result["error"] = fmt.Sprintf("参数 a 类型错误: 期望整数, 实际 %T", a)
+			return result
+		}
+		aInt := int(aFloat)
+
+		bFloat, bOk := b.(float64)
+		if !bOk {
+			result["error"] = fmt.Sprintf("参数 b 类型错误: 期望整数, 实际 %T", b)
+			return result
+		}
+		bInt := int(bFloat)
+
+		// 直接使用整数调用SumLongRunning函数
+		result["result"] = SumLongRunning(aInt, bInt)
+
 	case "Increase":
 		// Increase 不需要参数
 		result["result"] = Increase()

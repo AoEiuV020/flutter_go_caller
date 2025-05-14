@@ -39,7 +39,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future<void> _incrementCounterAsync() async {
-    final result = await goCallAsync('Sum', {'a': _counter, 'b': 1});
+    final result = await goCallAsync('SumLongRunning', {'a': _counter, 'b': 1});
     setState(() {
       _counter = result['result'];
     });
