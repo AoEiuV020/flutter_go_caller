@@ -56,6 +56,8 @@ func registerCallbacks() {
 
 func main() {
 	registerCallbacks()
+	// 通知JS运行时WASM已准备就绪
+	js.Global().Set("goWasmReady", js.ValueOf(true))
 	// 保持程序运行
 	select {}
 }
