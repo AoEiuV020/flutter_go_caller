@@ -46,7 +46,7 @@ else ifeq ($(findstring macos,$(MAKECMDGOALS)),macos)
 else ifeq ($(MAKECMDGOALS),windows)
 	PLATFORM = Windows
 	LIB_PREFIX :=
-else ifeq ($(MAKECMDGOALS),linux)
+else ifeq ($(findstring linux,$(MAKECMDGOALS)),linux)
 	PLATFORM = Linux
 else ifeq ($(MAKECMDGOALS),web)
 	PLATFORM = Web
@@ -181,12 +181,33 @@ windows:
 	go build $(GO_BUILD_FLAGS) -buildmode=c-shared -o ${PREBUILD_PATH}/AMD64/${LIB_NAME}.dll .
 	rm ${PREBUILD_PATH}/AMD64/${LIB_NAME}.h
 
-linux:
+
+linux-amd64:
 	CGO_ENABLED=1 \
 	GOOS=linux \
 	GOARCH=amd64 \
 	go build $(GO_BUILD_FLAGS) -buildmode=c-shared -o ${PREBUILD_PATH}/x86_64/${LIB_NAME}.so .
 	rm ${PREBUILD_PATH}/x86_64/${LIB_NAME}.h
+
+linux-arm64:
+	CGO_ENABLED=1 \
+	GOOS=linux \
+	GOARCH=arm64 \
+	go build $(GO_BUILD_FLAGS) -buildmode=c-shared -o ${PREBUILD_PATH}/aarch64/${LIB_NAME}.so .
+	rm ${PREBUILD_PATH}/aarch64/${LIB_NAME}.h
+
+linux:
+	@ARCH=$$(uname -m); \
+	if [ "$$ARCH" = "x86_64" ]; then \
+		echo "检测到 x86_64 架构，执行 linux-amd64 构建"; \
+		$(MAKE) linux-amd64; \
+	elif [ "$$ARCH" = "aarch64" ] || [ "$$ARCH" = "arm64" ]; then \
+		echo "检测到 ARM64 架构，执行 linux-arm64 构建"; \
+		$(MAKE) linux-arm64; \
+	else \
+		echo "警告: 未识别的架构 $$ARCH，默认执行 linux-amd64 构建"; \
+		$(MAKE) linux-amd64; \
+	fi
 
 web:
 	GOOS=js \
