@@ -25,9 +25,8 @@ case "$CONTAINER_STATUS" in
 esac
 
 # 直接从 Dockerfile 构建并运行容器
-docker build -t "$IMAGE_NAME" -f "$ROOT/script/docker/u2004.Dockerfile" "$ROOT/script/docker" && \
+docker build --pull -t "$IMAGE_NAME" -f "$ROOT/script/docker/u2004.Dockerfile" "$ROOT/script/docker" && \
 docker run -i --rm --name "$CONTAINER_NAME" \
-           --privileged=True \
            -v "$ROOT:/workspace" \
            "$IMAGE_NAME" $@
 if [ $? -ne 0 ]; then
