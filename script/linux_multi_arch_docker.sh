@@ -48,7 +48,6 @@ for ARCH in "${ARCHITECTURES[@]}"; do
     docker run --rm \
         --name "$CONTAINER_NAME" \
         --platform="$DOCKER_PLATFORM" \
-        --privileged \
         -v "$ROOT:/workspace" \
         "$IMAGE_NAME"
     
