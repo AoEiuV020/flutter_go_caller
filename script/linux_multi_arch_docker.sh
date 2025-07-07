@@ -31,7 +31,9 @@ for ARCH in "${ARCHITECTURES[@]}"; do
     
     # 构建镜像
     echo "构建 $ARCH 镜像..."
+    # 必须pull否则会复用已有某个架构的基础镜像导致切换架构无效，
     docker build --platform="$DOCKER_PLATFORM" \
+        --pull \
         -t "$IMAGE_NAME" \
         -f "$ROOT/script/docker/u2004.Dockerfile" \
         "$ROOT/script/docker"
