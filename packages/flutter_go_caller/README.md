@@ -95,6 +95,15 @@ android {
 - 使用 `force_load` 加载静态库
 - 修改后需清除 Flutter app 模块的 build 缓存
 
+**重要**: iOS 和 macOS 的实现文件中包含自动生成的 `#include` 指令，这些需要特殊处理：
+
+在 `ios/Classes/flutter_go_caller.c` 和 `macos/Classes/flutter_go_caller.c` 中，自动生成的包含源代码的 `#include` 指令需要被删除或注释。这是因为 FFI 插件模板会自动生成这些文件，但由于我们使用预编译库而非源代码编译，这些 include 需要移除：
+
+```c
+// 删除或注释掉如下行：
+// #include "../../go/main.go"
+```
+
 ### Windows/Linux
 
 修改 [./windows/CMakeLists.txt](./windows/CMakeLists.txt) 和 [./linux/CMakeLists.txt](./linux/CMakeLists.txt)：
