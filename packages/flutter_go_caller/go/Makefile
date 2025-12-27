@@ -6,21 +6,21 @@ BUILD_MODE ?= release
 
 # 根据构建模式设置Go构建参数
 ifeq ($(BUILD_MODE),debug)
-	# Debug模式：保留调试信息
+# Debug模式：保留调试信息
 	GO_BUILD_FLAGS := -gcflags="all=-N -l"
 else
-	# Release模式：优化体积
+# Release模式：优化体积
 	GO_BUILD_FLAGS := -trimpath -ldflags="-s -w" 
 endif
 
 NDK_VERSION ?= 27.0.12077973
 # 检测操作系统类型
 ifeq ($(OS),Windows_NT)
-	# Windows
+# Windows
 	ANDROID_HOME ?= $(LOCALAPPDATA)/Android/Sdk
 	NDK_PLATFORM := windows-x86_64
 else
-	# Unix-like (Linux/macOS)
+# Unix-like (Linux/macOS)
 	UNAME_S := $(shell uname -s)
 	ifeq ($(UNAME_S),Linux)
 		ANDROID_HOME ?= $(HOME)/Android/Sdk
@@ -51,9 +51,9 @@ else ifeq ($(findstring linux,$(MAKECMDGOALS)),linux)
 else ifeq ($(MAKECMDGOALS),web)
 	PLATFORM = Web
 else ifeq ($(MAKECMDGOALS),all)
-	# 设置默认平台，将在 all 目标中处理
+# 设置默认平台，将在 all 目标中处理
 else ifeq ($(MAKECMDGOALS),)
-	# 如果没有指定目标，也使用默认平台
+# 如果没有指定目标，也使用默认平台
 else
 	PLATFORM = $(MAKECMDGOALS)
 endif
@@ -75,16 +75,16 @@ else ifeq ($(UNAME_S),Linux)
 	$(MAKE) linux
 else ifeq ($(UNAME_S),Darwin)  # macOS
 	$(MAKE) macos
-	# 在macOS上追加执行ios任务
+# 在macOS上追加执行ios任务
 	$(MAKE) ios
 else
 	$(error Unsupported OS for default build: $(UNAME_S))
 endif
-	# 如果NDK存在，追加执行android任务（所有平台通用）
+# 如果NDK存在，追加执行android任务（所有平台通用）
 	@if [ "$(NDK_EXISTS)" = "true" ]; then \
 		$(MAKE) android; \
 	fi
-	# 追加执行web任务（所有平台通用）
+# 追加执行web任务（所有平台通用）
 	$(MAKE) web
 
 # 添加debug目标
